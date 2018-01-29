@@ -5,11 +5,11 @@ class Players extends Component {
 	constructor(props) {
 		super(props)
 
-		const players = [{'name':'Nathan','wins':0,'losses':4},
-						 {'name':'Nick','wins':3,'losses':4},
-						 {'name':'Aaron','wins':2,'losses':0},
-					     {'name':'Marcos','wins':7,'losses':8},
-					     {'name':'Kurt','wins':3,'losses':0}]
+		const players = [{'name':'Nathan','wins':0,'losses':0},
+						 {'name':'Nick','wins':0,'losses':0},
+						 {'name':'Aaron','wins':0,'losses':0},
+					     {'name':'Marcos','wins':0,'losses':0},
+					     {'name':'Kurt','wins':0,'losses':0}]
 
 		const compare = (a, b) => {
 			const totalA = a.wins - a.losses
@@ -24,19 +24,17 @@ class Players extends Component {
 
 	render() {
 		return(
-			<div>
+			<div class="container">
+			<h4>
+				{this.state.players[0].name} is the current leader. 
+				{this.state.players[this.state.players.length - 1].name} is dead last.
+			</h4>
 				{this.state.players.map(player=>{
 					return(
-						<div class="container">
-						<div class="row">
-						<div class="col-4">
 						<div class="list-group">
-						<div class="list-group-item">
-							<Player player={player} players={this.state.players}/>
-						</div>
-			            </div>
-			            </div>
-			            </div>
+							<div class="list-group-item">
+								<Player player={player} players={this.state.players}/>
+							</div>
 			            </div>
 					)
 				})}
