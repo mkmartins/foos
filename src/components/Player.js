@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Line } from 'rc-progress';
+import { Line } from 'rc-progress'
+import axios from 'axios'
 
 class Player extends Component {
 	constructor(props) {
@@ -14,18 +15,23 @@ class Player extends Component {
 	}
 
 	componentDidMount() {
+		console.log(this.props.player.id)
 		const percantage = Math.floor((this.state.wins/(this.state.wins + this.state.losses))*100)
 		this.setState({percantage: percantage})
 
 	}
 
 	addWin = () => {
+		const player = {wins:this.state.wins + 1}
+		axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
 		const wins = this.state.wins + 1
 		const percantage = Math.floor((wins/(wins + this.state.losses))*100)
 		this.setState({wins:wins, percantage: percantage})
 	}
 
 	addLoss = () => {
+		const player = {losses:this.state.losses + 1}
+		axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
 		const losses = this.state.losses + 1
 		const percantage = Math.floor((this.state.wins/(this.state.wins + losses))*100)
 		this.setState({losses:losses, percantage: percantage})

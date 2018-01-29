@@ -1,39 +1,38 @@
 import React, { Component } from 'react'
 import Player from './Player'
+import axios from 'axios'
 
 class Players extends Component {
 	constructor(props) {
 		super(props)
 
-		const players = [{'name':'Nathan','wins':0,'losses':0},
-						 {'name':'Nick','wins':0,'losses':0},
-						 {'name':'Aaron','wins':0,'losses':0},
-					     {'name':'Marcos','wins':0,'losses':0},
-					     {'name':'Kurt','wins':0,'losses':0}]
-
-		const compare = (a, b) => {
-			const totalA = a.wins - a.losses
- 		    const totalB = b.wins - b.losses
- 		    return (totalA - totalB) * -1
-		}
-
 		this.state = {
-			players: players.sort(compare)
+			players: []
 		}
+	}
+
+	compare = (a, b) => {
+		const totalA = a.wins - a.losses
+		const totalB = b.wins - b.losses
+		return (totalA - totalB) * -1
+	}
+
+	componentDidMount() {
+		axios.get(`https://foostestapi.herokuapp.com/players`)
+		.then(response=>{
+			const players = response.data
+			this.setState({players:players.sort(this.compare)})
+		})
 	}
 
 	render() {
 		return(
 			<div class="container">
-			<h4>
-				{this.state.players[0].name} is the current leader. 
-				{this.state.players[this.state.players.length - 1].name} is dead last.
-			</h4>
 				{this.state.players.map(player=>{
 					return(
 						<div class="list-group">
 							<div class="list-group-item">
-								<Player player={player} players={this.state.players}/>
+								<Player player={player} players={this.state.players} key={player.id}/>
 							</div>
 			            </div>
 					)
