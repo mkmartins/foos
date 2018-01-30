@@ -30,8 +30,12 @@ class Players extends Component {
 			if (player.id === updatedPlayer.id) {
 				if (winOrLoss === 'addWin') {
 					player.wins++
-				} else {
+				} else if (winOrLoss === 'removeWin') {
+					player.wins--
+				} else if (winOrLoss === 'addLoss') {
 					player.losses++
+				} else if (winOrLoss === 'removeLoss') {
+					player.losses--
 				}
 			}
 		})
