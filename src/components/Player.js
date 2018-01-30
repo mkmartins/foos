@@ -10,12 +10,11 @@ class Player extends Component {
 			percantage: 0,
 			wins: this.props.player.wins,
 			losses: this.props.player.losses,
-			players: this.props.players
+			player:this.props.player
 		}
 	}
 
 	componentDidMount() {
-		console.log(this.props.player.id)
 		const percantage = Math.floor((this.state.wins/(this.state.wins + this.state.losses))*100)
 		this.setState({percantage: percantage})
 
@@ -27,6 +26,7 @@ class Player extends Component {
 		const wins = this.state.wins + 1
 		const percantage = Math.floor((wins/(wins + this.state.losses))*100)
 		this.setState({wins:wins, percantage: percantage})
+		this.props.callbackFromParent(this.state.player, 'addWin')
 	}
 
 	addLoss = () => {
@@ -35,12 +35,14 @@ class Player extends Component {
 		const losses = this.state.losses + 1
 		const percantage = Math.floor((this.state.wins/(this.state.wins + losses))*100)
 		this.setState({losses:losses, percantage: percantage})
+		this.props.callbackFromParent(this.state.player, 'addLoss')
 	}
 
 	render() {
 		return(
 				<ul>
-					<p>{this.props.player.name}</p>
+					<p>{this.state.player.name}</p>
+					<p class="badge badge-secondary">total {this.state.wins - this.state.losses}</p>
 					<p>{this.state.wins} total wins</p>
 					<p>{this.state.losses} total losses</p>
 					<p>{this.state.percantage}%

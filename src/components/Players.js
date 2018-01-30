@@ -21,22 +21,43 @@ class Players extends Component {
 		axios.get(`https://foostestapi.herokuapp.com/players`)
 		.then(response=>{
 			const players = response.data
-			this.setState({players:players.sort(this.compare)})
+			this.setState({players:players})
 		})
+	}
+
+	playerCallback = (updatedPlayer,winOrLoss) => {		
+		this.state.players.find(player=>{
+			if (player.id === updatedPlayer.id) {
+				if (winOrLoss === 'addWin') {
+					player.wins++
+				} else {
+					player.losses++
+				}
+			}
+		})
+		this.setState({players:this.state.players})
+	}
+
+	resetScore = () => {
+		this.state.players.map(player=>{
+			axios.patch(`https://foostestapi.herokuapp.com/players/${player.id}`, {wins:0, losses:0})
+		})
+		this.setState({players:this.state.players})
 	}
 
 	render() {
 		return(
 			<div class="container">
-				{this.state.players.map(player=>{
+				{this.state.players.sort(this.compare).map(player=>{
 					return(
 						<div class="list-group">
 							<div class="list-group-item">
-								<Player player={player} players={this.state.players} key={player.id}/>
+								<Player player={player} callbackFromParent={this.playerCallback} key={player.id}/>
 							</div>
 			            </div>
 					)
 				})}
+				<button onClick={this.resetScore}>Reset Score</button>
 			</div>
 		)
 	}
