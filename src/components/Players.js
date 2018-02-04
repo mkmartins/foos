@@ -12,8 +12,12 @@ class Players extends Component {
 	}
 
 	compare = (a, b) => {
-		const totalA = a.wins - a.losses
-		const totalB = b.wins - b.losses
+		let totalA = a.wins - a.losses
+		let totalB = b.wins - b.losses
+		if (totalA === totalB) {
+			 totalA = a.wins + a.losses
+			 totalB = b.wins + b.losses
+		}
 		return (totalA - totalB) * -1
 	}
 
@@ -52,6 +56,11 @@ class Players extends Component {
 	render() {
 		return(
 			<div class="container">
+				<ul>
+					<li>Last update on Feb 4th.</li>
+					<li>Adds red percentage line for percentages below 50%.</li>
+					<li>If 2 or more players have the same total win-loss ratio, player with more games will rate higher.</li>
+				</ul>
 				{this.state.players.sort(this.compare).map(player=>{
 					return(
 						<div class="list-group">

@@ -63,7 +63,12 @@ class Player extends Component {
 					<p>{this.state.wins} total wins</p>
 					<p>{this.state.losses} total losses</p>
 					<p>{this.state.percantage}%
+					{this.state.percantage > 49 &&
 						<Line percent={this.state.percantage} strokeWidth="5" trailWidth="5" strokeColor="#2db7f5" />
+					}
+					{this.state.percantage  < 50 &&
+						<Line percent={this.state.percantage} strokeWidth="5" trailWidth="5" strokeColor="red" />
+					}
 					</p>
 					<div>
 						<button onClick={this.addWin}>Add Win</button>
