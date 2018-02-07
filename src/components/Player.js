@@ -7,7 +7,7 @@ class Player extends Component {
 		super(props)
 
 		this.state = {
-			percantage: 0,
+			percentage: 0,
 			wins: this.props.player.wins,
 			losses: this.props.player.losses,
 			player:this.props.player
@@ -15,8 +15,8 @@ class Player extends Component {
 	}
 
 	componentDidMount() {
-		const percantage = Math.floor((this.state.wins/(this.state.wins + this.state.losses))*100)
-		this.setState({percantage: percantage})
+		const percentage = Math.floor((this.state.wins/(this.state.wins + this.state.losses))*100)
+		this.setState({percentage: percentage})
 
 	}
 
@@ -24,16 +24,16 @@ class Player extends Component {
 		const player = {wins:this.state.wins + 1}
 		axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
 		const wins = this.state.wins + 1
-		const percantage = Math.floor((wins/(wins + this.state.losses))*100)
-		this.setState({wins:wins, percantage: percantage})
+		const percentage = Math.floor((wins/(wins + this.state.losses))*100)
+		this.setState({wins:wins, percentage: percentage})
 		this.props.callbackFromParent(this.state.player, 'addWin')
 	}
 	removeWin = () => {
 		const player = {wins:this.state.wins - 1}
 		axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
 		const wins = this.state.wins - 1
-		const percantage = Math.floor((wins/(wins + this.state.losses))*100)
-		this.setState({wins:wins, percantage: percantage})
+		const percentage = Math.floor((wins/(wins + this.state.losses))*100)
+		this.setState({wins:wins, percentage: percentage})
 		this.props.callbackFromParent(this.state.player, 'removeWin')
 	}
 
@@ -41,8 +41,8 @@ class Player extends Component {
 		const player = {losses:this.state.losses + 1}
 		axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
 		const losses = this.state.losses + 1
-		const percantage = Math.floor((this.state.wins/(this.state.wins + losses))*100)
-		this.setState({losses:losses, percantage: percantage})
+		const percentage = Math.floor((this.state.wins/(this.state.wins + losses))*100)
+		this.setState({losses:losses, percentage: percentage})
 		this.props.callbackFromParent(this.state.player, 'addLoss')
 	}
 
@@ -50,8 +50,8 @@ class Player extends Component {
 		const player = {losses:this.state.losses - 1}
 		axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
 		const losses = this.state.losses - 1
-		const percantage = Math.floor((this.state.wins/(this.state.wins + losses))*100)
-		this.setState({losses:losses, percantage: percantage})
+		const percentage = Math.floor((this.state.wins/(this.state.wins + losses))*100)
+		this.setState({losses:losses, percentage: percentage})
 		this.props.callbackFromParent(this.state.player, 'removeLoss')
 	}
 
@@ -62,12 +62,12 @@ class Player extends Component {
 					<p class="badge badge-secondary">total {this.state.wins - this.state.losses}</p>
 					<p>{this.state.wins} total wins</p>
 					<p>{this.state.losses} total losses</p>
-					<p>{this.state.percantage}%
-					{this.state.percantage > 49 &&
-						<Line percent={this.state.percantage} strokeWidth="5" trailWidth="5" strokeColor="#2db7f5" />
+					<p>{this.state.percentage}%
+					{this.state.percentage > 49 &&
+						<Line percent={this.state.percentage} strokeWidth="5" trailWidth="5" strokeColor="#2db7f5" />
 					}
-					{this.state.percantage  < 50 &&
-						<Line percent={this.state.percantage} strokeWidth="5" trailWidth="5" strokeColor="red" />
+					{this.state.percentage  < 50 &&
+						<Line percent={this.state.percentage} strokeWidth="5" trailWidth="5" strokeColor="red" />
 					}
 					</p>
 					<div>

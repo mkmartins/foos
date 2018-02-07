@@ -22,3 +22,16 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.SelectedPlayer {
+  background-color: blue;
+  color: white;
+}
+
+.btn {
+  margin-top: 10px;
+}
+
+.PlayersToChooseFrom{
+  cursor: pointer;
+}

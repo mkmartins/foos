@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
 import Player from './Player'
+import ChoosePlayer from './ChoosePlayer'
 import axios from 'axios'
+import shuffle from 'shuffle-array'
 
 class Players extends Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
-			players: []
+			players: [],
+			PlayersToChooseFrom: [],
+			displayTeams:""
 		}
 	}
 
@@ -22,10 +26,14 @@ class Players extends Component {
 	}
 
 	componentDidMount() {
+		const PlayersToChooseFrom = []
 		axios.get(`https://foostestapi.herokuapp.com/players`)
 		.then(response=>{
 			const players = response.data
-			this.setState({players:players})
+			response.data.map(player=>{
+				PlayersToChooseFrom.push({name:player.name, selected:false, total:player.wins - player.losses})
+			})
+			this.setState({players:players, PlayersToChooseFrom:PlayersToChooseFrom})
 		})
 	}
 
@@ -53,24 +61,113 @@ class Players extends Component {
 		this.setState({players:this.state.players})
 	}
 
+	selectPlayer = (selectedPlayer) => {
+		this.state.PlayersToChooseFrom.find(player=>{
+			if (player.name === selectedPlayer.name) {
+				if (!player.selected) {
+					player.selected = true
+				} else {
+					player.selected = false
+				}
+			}
+		})
+		this.setState({PlayersToChooseFrom:this.state.PlayersToChooseFrom})
+	}
+
+	selectTeams = () => {
+		const playersPlaying = []
+		let teamA = []
+		let teamANames = []
+		let teamB = []
+		let teamBNames = []
+		let teamATotal = 0
+		let teamBTotal = 0
+		let message = ""
+
+		this.state.PlayersToChooseFrom.map(player=>{
+			if(player.selected) {
+				playersPlaying.push(player)
+			}
+		})
+		shuffle(playersPlaying)
+		teamA = playersPlaying.slice(0,2)
+		teamB = playersPlaying.slice(2,4)
+		teamA.map(player=>{
+			teamATotal += player.total
+			teamANames.push(player.name)
+		})
+		teamB.map(player=>{
+			teamBTotal += player.total
+			teamBNames.push(player.name)
+		})
+
+		if(teamATotal > teamBTotal) {
+			message = "Team B is the Underdog"
+		} else {
+			message = "Team A is the Underdog"
+		}
+		if (playersPlaying.length > 3) {
+			this.teams(teamANames,teamBNames,message)
+		} else {
+			this.setState({displayTeams:"You must select at least 4 players."})
+		}
+	}
+
+	teams = (a,b,message) => {
+			let displayTeams = ""
+			if (a && b) {
+				const teamA = "Team A: " + a.join(" and ")
+				const teamB = "Team B: " + b.join(" and ")
+				displayTeams = teamA + "|" + teamB + "|" + message
+				this.setState({displayTeams:displayTeams})
+			}
+	}
+
 	render() {
 		return(
 			<div class="container">
-				<ul>
-					<li>Last update on Feb 4th.</li>
-					<li>Adds red percentage line for percentages below 50%.</li>
-					<li>If 2 or more players have the same total win-loss ratio, player with more games will rate higher.</li>
-				</ul>
-				{this.state.players.sort(this.compare).map(player=>{
-					return(
-						<div class="list-group">
-							<div class="list-group-item">
-								<Player player={player} callbackFromParent={this.playerCallback} key={player.id}/>
-							</div>
-			            </div>
-					)
-				})}
-				<button onClick={this.resetScore}>Reset Score</button>
+				<div class="row">
+					<ul>
+						<li>Last update on Feb 4th.</li>
+						<li>Adds red percentage line for percentages below 50%.</li>
+						<li>If 2 or more players have the same total win-loss ratio, player with more games will rate higher.</li>
+					</ul>
+					<div class="col-8">
+						{this.state.players.sort(this.compare).map(player=>{
+							return(
+								<div class="list-group">
+									<div class="list-group-item">
+										<Player player={player} callbackFromParent={this.playerCallback} key={player.id}/>
+									</div>
+								</div>
+							)
+						})}
+						<button onClick={this.resetScore}>Reset Score</button>
+					</div>
+					<div class="col-4">
+						<div>
+							{this.state.PlayersToChooseFrom.map(player=>{
+								return(
+									<div className="PlayersToChooseFrom" class="list-group">
+										<div class={"list-group-item "+ (player.selected ? "list-group-item-primary" : "list-group-item-light")} >
+											<ChoosePlayer player={player} selectPlayer={this.selectPlayer}/>
+										</div>
+									</div>
+								)
+							})}
+						</div>
+						<div>
+							<button class="btn btn-outline-primary" onClick={this.selectTeams}>Select Teams</button>
+						</div>
+						<div>
+							{this.state.displayTeams.split("|").map(m=>{
+								return(
+									<h1>{m}</h1>
+								)
+							})}
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	}
