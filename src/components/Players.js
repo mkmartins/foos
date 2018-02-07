@@ -162,7 +162,9 @@ class Players extends Component {
 						<div>
 							{this.state.displayTeams.split("|").map(m=>{
 								return(
-									<h1>{m}</h1>
+									<ul class="list-group">
+										<li class="list-group-item"><h1>{m}</h1></li>
+									</ul>
 								)
 							})}
 						</div>
