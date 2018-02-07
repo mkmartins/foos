@@ -3,6 +3,7 @@ import Player from './Player'
 import ChoosePlayer from './ChoosePlayer'
 import axios from 'axios'
 import shuffle from 'shuffle-array'
+import Countdown from 'react-countdown-now';
 
 class Players extends Component {
 	constructor(props) {
@@ -123,6 +124,10 @@ class Players extends Component {
 			}
 	}
 
+	renderer = ({ days, hours, minutes, seconds, completed }) => {
+		return <p class="lead">{days} Days {hours} Hours {minutes} Minutes and {seconds} seconds until next season</p>
+    };	  
+
 	render() {
 		return(
 			<div class="container">
@@ -132,7 +137,13 @@ class Players extends Component {
 						<li>Adds red percentage line for percentages below 50%.</li>
 						<li>If 2 or more players have the same total win-loss ratio, player with more games will rate higher.</li>
 					</ul>
-					<div class="col-8">
+					<div class="col-12 col-sm-8">
+						<div class="alert alert-primary" role="alert">
+							<Countdown
+								date={'Mar 2018 00:00:00'}
+								renderer={this.renderer}
+							/>
+						</div>
 						{this.state.players.sort(this.compare).map(player=>{
 							return(
 								<div class="list-group">
@@ -144,7 +155,8 @@ class Players extends Component {
 						})}
 						<button onClick={this.resetScore}>Reset Score</button>
 					</div>
-					<div class="col-4">
+					<div class="col-12 col-sm-4">
+						<h1>Foos luck!</h1>
 						<div>
 							{this.state.PlayersToChooseFrom.map(player=>{
 								return(
