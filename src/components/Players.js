@@ -12,7 +12,29 @@ class Players extends Component {
 		this.state = {
 			players: [],
 			PlayersToChooseFrom: [],
-			displayTeams:""
+			displayTeams:"",
+			admin:false
+		}
+	}
+
+	validateAdmin = () => {
+		let isAdmin = prompt("Please enter your admin key")
+		if(isAdmin === "aaronrocks") {
+			this.setState({admin:true})
+			alert("Now you can make the changes you want!")
+		} else {
+			alert("You ain't no admin!")
+		}
+	}
+
+	resetScore = () => {
+		if (this.state.admin) {
+			this.state.players.map(player=>{
+				axios.patch(`https://foostestapi.herokuapp.com/players/${player.id}`, {wins:0, losses:0})
+			})
+			this.setState({players:this.state.players})
+		} else {
+			this.validateAdmin()
 		}
 	}
 
@@ -51,13 +73,6 @@ class Players extends Component {
 					player.losses--
 				}
 			}
-		})
-		this.setState({players:this.state.players})
-	}
-
-	resetScore = () => {
-		this.state.players.map(player=>{
-			axios.patch(`https://foostestapi.herokuapp.com/players/${player.id}`, {wins:0, losses:0})
 		})
 		this.setState({players:this.state.players})
 	}
@@ -132,11 +147,6 @@ class Players extends Component {
 		return(
 			<div class="container">
 				<div class="row">
-					<ul>
-						<li>Last update on Feb 4th.</li>
-						<li>Adds red percentage line for percentages below 50%.</li>
-						<li>If 2 or more players have the same total win-loss ratio, player with more games will rate higher.</li>
-					</ul>
 					<div class="col-12 col-sm-8">
 						<div class="alert alert-primary" role="alert">
 							<Countdown
@@ -147,8 +157,8 @@ class Players extends Component {
 						{this.state.players.sort(this.compare).map(player=>{
 							return(
 								<div class="list-group">
-									<div class="list-group-item">
-										<Player player={player} callbackFromParent={this.playerCallback} key={player.id}/>
+									<div class="jumbotron">
+										<Player player={player} callbackFromParent={this.playerCallback} validateAdmin={this.validateAdmin} key={player.id}/>
 									</div>
 								</div>
 							)
