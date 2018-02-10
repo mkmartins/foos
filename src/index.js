@@ -1,27 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom'
-import App from './App';
-import Header from './Header';
-import './index.css';
-import 'bootstrap/dist/css/bootstrap.css';
-
-class Hello extends React.Component {
-  render() {return <div>Hello World!</div>}
-}
-
-class GoodBye extends React.Component {
-  render() {return <div>Good Bye World!</div>}
-}
+import Players from './components/Players'
+import ReactDOM from 'react-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import Header from './Header'
+import About from './components/About'
+import './index.css'
+import 'bootstrap/dist/css/bootstrap.css'
 
 
 ReactDOM.render(
   <BrowserRouter>
     <div>
       <Header />
-      <Route path="/" component={App} />
-      <Route path="/hello" component={Hello} />
-      <Route path="/goodbye" component={GoodBye} />
+      <Switch>
+        <Route path="/About" component={About} />
+        <Route path="/" component={Players} />
+      </Switch>
     </div>
   </BrowserRouter>
   ,document.getElementById('root')

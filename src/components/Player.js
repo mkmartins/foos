@@ -32,7 +32,6 @@ class Player extends Component {
 	}
 
 	addWin = () => {
-		console.log(this.state.admin)
 		if (this.state.admin) {
 			const player = {wins:this.state.wins + 1}
 			axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
@@ -88,7 +87,7 @@ class Player extends Component {
 		return(
 				<ul>
 					<p>{this.state.player.name}</p>
-					<p class="badge badge-secondary">total {this.state.wins - this.state.losses}</p>
+					<p className="badge badge-secondary">total {this.state.wins - this.state.losses}</p>
 					<p>{this.state.wins} total wins</p>
 					<p>{this.state.losses} total losses</p>
 					<p>{this.state.percentage}%

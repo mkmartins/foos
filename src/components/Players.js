@@ -4,6 +4,7 @@ import ChoosePlayer from './ChoosePlayer'
 import axios from 'axios'
 import shuffle from 'shuffle-array'
 import Countdown from 'react-countdown-now';
+import ReactTooltip from 'react-tooltip'
 
 class Players extends Component {
 	constructor(props) {
@@ -12,33 +13,11 @@ class Players extends Component {
 		this.state = {
 			players: [],
 			PlayersToChooseFrom: [],
-			displayTeams:"",
-			admin:false
+			displayTeams:""
 		}
 	}
 
-	validateAdmin = () => {
-		let isAdmin = prompt("Please enter your admin key")
-		if(isAdmin === "aaronrocks") {
-			this.setState({admin:true})
-			alert("Now you can make the changes you want!")
-		} else {
-			alert("You ain't no admin!")
-		}
-	}
-
-	resetScore = () => {
-		if (this.state.admin) {
-			this.state.players.map(player=>{
-				axios.patch(`https://foostestapi.herokuapp.com/players/${player.id}`, {wins:0, losses:0})
-			})
-			this.setState({players:this.state.players})
-		} else {
-			this.validateAdmin()
-		}
-	}
-
-	compare = (a, b) => {
+	defaultSort = (a, b) => {
 		let totalA = a.wins - a.losses
 		let totalB = b.wins - b.losses
 		if (totalA === totalB) {
@@ -46,6 +25,24 @@ class Players extends Component {
 			 totalB = b.wins + b.losses
 		}
 		return (totalA - totalB) * -1
+	}
+
+	aaronSort = (a,b) => {
+		const percentageA = Math.floor((a.wins/(a.wins + a.losses))*100)
+		const percentageB = Math.floor((b.wins/(b.wins + b.losses))*100)
+		let totalA = (a.wins + a.losses)*percentageA
+		let totalB = (b.wins + b.losses)*percentageB
+		if (totalA === totalB) {
+			 totalA = a.wins + a.losses
+			 totalB = b.wins + b.losses
+		}
+		return (totalA - totalB) * -1
+	}
+
+	sortMethod = (type) => {
+		const players = this.state.players
+		players.sort(type)
+		this.setState({players:players})
 	}
 
 	componentDidMount() {
@@ -56,6 +53,7 @@ class Players extends Component {
 			response.data.map(player=>{
 				PlayersToChooseFrom.push({name:player.name, selected:false, total:player.wins - player.losses})
 			})
+			players.sort(this.defaultSort)
 			this.setState({players:players, PlayersToChooseFrom:PlayersToChooseFrom})
 		})
 	}
@@ -140,38 +138,41 @@ class Players extends Component {
 	}
 
 	renderer = ({ days, hours, minutes, seconds, completed }) => {
-		return <p class="lead">{days} Days {hours} Hours {minutes} Minutes and {seconds} seconds until next season</p>
+		return <p className="lead">{days} Days {hours} Hours {minutes} Minutes and {seconds} seconds until next season</p>
     };	  
 
 	render() {
+		const aaronMethod = "(total games * percentage value) * percentage"
+		const defaultMethod = "Wins - Losses. In case of a tie, number of games matter."
 		return(
-			<div class="container">
-				<div class="row">
-					<div class="col-12 col-sm-8">
-						<div class="alert alert-primary" role="alert">
+			<div className="container">
+				<div className="row">
+					<div className="col-12 col-sm-8">
+						<div className="alert alert-primary" role="alert">
 							<Countdown
 								date={'Mar 2018 00:00:00'}
 								renderer={this.renderer}
 							/>
 						</div>
-						{this.state.players.sort(this.compare).map(player=>{
+						<button data-tip={defaultMethod} onClick={() => {this.sortMethod(this.defaultSort)}}>Default Method</button>
+						<button data-tip={aaronMethod} onClick={() => {this.sortMethod(this.aaronSort)}}>Aaron's method</button>
+						{this.state.players.map(player=>{
 							return(
-								<div class="list-group">
-									<div class="jumbotron">
+								<div className="list-group">
+									<div className="jumbotron">
 										<Player player={player} callbackFromParent={this.playerCallback} validateAdmin={this.validateAdmin} key={player.id}/>
 									</div>
 								</div>
 							)
 						})}
-						<button onClick={this.resetScore}>Reset Score</button>
 					</div>
-					<div class="col-12 col-sm-4">
+					<div className="col-12 col-sm-4">
 						<h1>Foos luck!</h1>
 						<div>
 							{this.state.PlayersToChooseFrom.map(player=>{
 								return(
-									<div className="PlayersToChooseFrom" class="list-group">
-										<div class={"list-group-item "+ (player.selected ? "list-group-item-primary" : "list-group-item-light")} >
+									<div className="PlayersToChooseFrom" className="list-group">
+										<div className={"list-group-item "+ (player.selected ? "list-group-item-primary" : "list-group-item-light")} >
 											<ChoosePlayer player={player} selectPlayer={this.selectPlayer}/>
 										</div>
 									</div>
@@ -179,19 +180,20 @@ class Players extends Component {
 							})}
 						</div>
 						<div>
-							<button class="btn btn-outline-primary" onClick={this.selectTeams}>Select Teams</button>
+							<button className="btn btn-outline-primary" onClick={this.selectTeams}>Select Teams</button>
 						</div>
 						<div>
 							{this.state.displayTeams.split("|").map(m=>{
 								return(
-									<ul class="list-group">
-										<li class="list-group-item"><h1>{m}</h1></li>
+									<ul className="list-group">
+										<li className="list-group-item"><h1>{m}</h1></li>
 									</ul>
 								)
 							})}
 						</div>
 					</div>
 				</div>
+				<ReactTooltip place="top" type="info" />
 			</div>
 		)
 	}
