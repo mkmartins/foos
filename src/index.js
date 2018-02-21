@@ -10,7 +10,7 @@ import About from './containers/About'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const createStoreWithMiddleware = applyMiddleware()(createStore)
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>

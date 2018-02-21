@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 class PlayerInfo extends React.Component {
     render() {
         if(!this.props.player) {
-            return <div>Select a Player to learn about him/she!</div>
+            return <div>Select a Player to learn about him!</div>
         }
         return(
             <div>
