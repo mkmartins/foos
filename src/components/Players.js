@@ -169,7 +169,7 @@ class Players extends Component {
 							{this.state.players.map(player=>{
 								return(
 									<div className="list-group">
-										<div className="jumbotron">
+										<div className="card card-outline-primary text-center">
 											<Player player={player} callbackFromParent={this.playerCallback} validateAdmin={this.validateAdmin} key={player.id}/>
 										</div>
 									</div>

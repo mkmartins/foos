@@ -94,7 +94,7 @@ class Player extends Component {
 					{ this.state.player.name === "Kurt" &&
 						<img src={loser} width="200" height="200" className="d-inline-block align-top" alt="" />
 					}
-					<p>{this.state.player.name}</p>
+					<h3>{this.state.player.name}</h3>
 					<p className="badge badge-secondary">total {this.state.wins - this.state.losses}</p>
 					<p>{this.state.wins} total wins</p>
 					<p>{this.state.losses} total losses</p>
