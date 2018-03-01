@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Line } from 'rc-progress'
 import axios from 'axios'
+import champ from '../champ-icon.png'
+import loser from '../loser-icon.png'
 
 class Player extends Component {
 	constructor(props) {
@@ -86,6 +88,12 @@ class Player extends Component {
 	render() {
 		return(
 				<ul>
+					{ this.state.player.name === "Nick" &&
+						<img src={champ} width="200" height="200" className="d-inline-block align-top" alt="" />
+					}
+					{ this.state.player.name === "Kurt" &&
+						<img src={loser} width="200" height="200" className="d-inline-block align-top" alt="" />
+					}
 					<p>{this.state.player.name}</p>
 					<p className="badge badge-secondary">total {this.state.wins - this.state.losses}</p>
 					<p>{this.state.wins} total wins</p>

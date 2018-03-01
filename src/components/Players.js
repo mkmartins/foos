@@ -144,6 +144,7 @@ class Players extends Component {
     };	  
 
 	render() {
+		console.log(this.renderer)
 		const aaronMethod = "(total games * percentage value) * percentage"
 		const defaultMethod = "Wins - Losses. In case of a tie, number of games matter."
 		if(this.state.loading) {
@@ -159,7 +160,7 @@ class Players extends Component {
 						<div className="col-12 col-sm-8">
 							<div className="alert alert-primary" role="alert">
 								<Countdown
-									date={'Mar 2018 00:00:00'}
+									date={'May 2018 00:00:00'}
 									renderer={this.renderer}
 								/>
 							</div>
