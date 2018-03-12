@@ -38,7 +38,7 @@ class Player extends Component {
 	addWin = () => {
 		if (this.state.admin) {
 			const player = {wins:this.state.wins + 1}
-			axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
+			axios.patch(`https://foos.node-3.net/api/players/${this.props.player.id}`, {player})
 			const wins = this.state.wins + 1
 			const percentage = Math.floor((wins/(wins + this.state.losses))*100)
 			this.setState({wins:wins, percentage: percentage})
@@ -51,7 +51,7 @@ class Player extends Component {
 	removeWin = () => {
 		if (this.state.admin) {
 			const player = {wins:this.state.wins - 1}
-			axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
+			axios.patch(`https://foos.node-3.net/api/players/${this.props.player.id}`, {player})
 			const wins = this.state.wins - 1
 			const percentage = Math.floor((wins/(wins + this.state.losses))*100)
 			this.setState({wins:wins, percentage: percentage})
@@ -64,7 +64,7 @@ class Player extends Component {
 	addLoss = () => {
 		if (this.state.admin) {
 			const player = {losses:this.state.losses + 1}
-			axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
+			axios.patch(`https://foos.node-3.net/api/players/${this.props.player.id}`, {player})
 			const losses = this.state.losses + 1
 			const percentage = Math.floor((this.state.wins/(this.state.wins + losses))*100)
 			this.setState({losses:losses, percentage: percentage})
@@ -77,7 +77,7 @@ class Player extends Component {
 	removeLoss = () => {
 		if (this.state.admin) {
 			const player = {losses:this.state.losses - 1}
-			axios.patch(`https://foostestapi.herokuapp.com/players/${this.props.player.id}`, {player})
+			axios.patch(`https://foos.node-3.net/api/players/${this.props.player.id}`, {player})
 			const losses = this.state.losses - 1
 			const percentage = Math.floor((this.state.wins/(this.state.wins + losses))*100)
 			this.setState({losses:losses, percentage: percentage})

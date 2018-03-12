@@ -21,7 +21,7 @@ class Players extends Component {
 
 	componentDidMount() {
 		const PlayersToChooseFrom = []
-		axios.get(`https://foostestapi.herokuapp.com/players`)
+		axios.get(`https://foos.node-3.net/api/players`)
 		.then(response=>{
 			const players = response.data
 			response.data.map(player=>{
