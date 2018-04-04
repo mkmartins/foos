@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import champ from '../champ-icon.png'
+import champAgain from '../back2back.png'
 import loser from '../loser-icon.png'
-import second from '../second.png'
-import goodTry from '../good-try.png'
+import special from '../special.png'
+import youStink from '../you-stink.png'
+import mostLosses from '../most-losses.png'
+import jerky from '../jerky.png'
 import { connect } from 'react-redux'
 import '../App.css';
 
@@ -64,48 +67,68 @@ class Player extends Component {
 
 	render() {
 		return(
-				<ul className="playerCard"> 
-					{ this.state.player.name === "Nick" &&
-						<img src={champ} width="200" height="200" className="d-inline-block align-top" alt="" />
-					}
-					{ this.state.player.name === "Kurt" &&
-						<img src={loser} width="200" height="200" className="d-inline-block align-top" alt="" />
-					}
-					{ this.state.player.name === "Aaron" &&
-						<img src={second} width="400" height="200" className="d-inline-block align-top" alt="" />
-					}
-					{ this.state.player.name === "Nate" &&
-						<img src={goodTry} width="300" height="300" className="d-inline-block align-top" alt="" />
-					}
-					<h3>{this.state.player.name}</h3>
-					<p className="badge badge-secondary">total {this.state.wins - this.state.losses}</p>
-					<p>{this.state.wins} total wins</p>
-					<p>{this.state.losses} total losses</p>
-					<div>{this.state.percentage}%
-					{this.state.percentage > 49 &&
-						<div className="progress">
-							<div className="progress-bar progress-bar-striped" role="progressbar" style={{width:`${this.state.percentage}%`}} aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-						</div>
-					}
-					{this.state.percentage  < 50 &&
-					<div className="progress">
-						<div className="progress-bar progress-bar-striped bg-danger" role="progressbar" style={{width:`${this.state.percentage}%`}} aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-					</div>
-					}
-					</div>
-					{ this.props.admin === 'niceD' && 
-						<div>
-							<div>
-								<button onClick={this.addWin}>Add Win</button>
-								<button onClick={this.removeWin}>Remove a Win</button>
+			<div className="container">
+				<div className="row">
+					<div className="col-12 col-sm-6">
+						<ul className="playerCard"> 
+							<h3>{this.state.player.name}</h3>
+							<p className="badge badge-secondary">total {this.state.wins - this.state.losses}</p>
+							<p>{this.state.wins} total wins</p>
+							<p>{this.state.losses} total losses</p>
+							<div>{this.state.percentage}%
+							{this.state.percentage > 49 &&
+								<div className="progress">
+									<div className="progress-bar progress-bar-striped" role="progressbar" style={{width:`${this.state.percentage}%`}} aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+							}
+							{this.state.percentage  < 50 &&
+							<div className="progress">
+								<div className="progress-bar progress-bar-striped bg-danger" role="progressbar" style={{width:`${this.state.percentage}%`}} aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
-							<div>
-								<button onClick={this.addLoss}>Add Loss</button>
-								<button onClick={this.removeLoss}>Remove a Loss</button>
+							}
 							</div>
-						</div>
-					}
-				</ul>
+							{ this.props.admin === 'niceD' && 
+								<div>
+									<div>
+										<button onClick={this.addWin}>Add Win</button>
+										<button onClick={this.removeWin}>Remove a Win</button>
+									</div>
+									<div>
+										<button onClick={this.addLoss}>Add Loss</button>
+										<button onClick={this.removeLoss}>Remove a Loss</button>
+									</div>
+								</div>
+							}
+						</ul>
+					</div>
+					<div className="col-12 col-sm-6">
+						{ this.state.player.name === "Nick" &&
+							<div className="container">
+								<img src={champ} width="100" height="100" className="d-inline-block align-top" alt="" />
+								<img src={champAgain} width="170" height="150" className="d-inline-block align-top" alt="" />
+							</div>
+						}
+						{ this.state.player.name === "Kurt" &&
+							<img src={loser} width="150" height="150" className="d-inline-block align-top" alt="" />
+						}
+						{ this.state.player.name === "Keith" &&
+							<img src={special} width="150" height="150" className="d-inline-block align-top" alt="" />
+						}
+						{ this.state.player.name === "Marcos" &&
+							<img src={jerky} width="130" height="130" className="d-inline-block align-top" alt="" />
+						}
+						{ this.state.player.name === "Aaron" &&
+							<img src={mostLosses} width="130" height="130" className="d-inline-block align-top" alt="" />
+						}
+						{ this.state.player.name === "Nate" &&
+							<div className="container">
+								<img src={jerky} width="130" height="130" className="d-inline-block align-top" alt="" />
+								<img src={youStink} width="130" height="130" className="d-inline-block align-top" alt="" />
+							</div>
+						}
+					</div>
+				</div>
+			</div>
 		)
 	}
 }
