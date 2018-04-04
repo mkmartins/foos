@@ -4,3 +4,11 @@ export function selectPlayer(player) {
         payload: player
     }
 }
+
+export function handleAdminChange(value) {
+    return {
+        type: "HANDLE_ADMIN_CHANGES",
+        payload: value
+    }
+}
+

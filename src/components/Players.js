@@ -6,6 +6,8 @@ import shuffle from 'shuffle-array'
 import Countdown from 'react-countdown-now'
 import ReactTooltip from 'react-tooltip'
 import loading from '../loading.png'
+import {connect} from 'react-redux'
+import { handleAdminChange } from '../actions'
 
 class Players extends Component {
 	constructor(props) {
@@ -141,10 +143,13 @@ class Players extends Component {
 
 	renderer = ({ days, hours, minutes, seconds, completed }) => {
 		return <p className="lead">{days} Days {hours} Hours {minutes} Minutes and {seconds} seconds until next season</p>
-    };	  
+	};	
+	
+	handleAdminChange = (event) => {
+		this.props.handleAdminChange(event.target.value)
+	}
 
 	render() {
-		console.log(this.renderer)
 		const aaronMethod = "(total games * percentage value) * percentage"
 		const defaultMethod = "Wins - Losses. In case of a tie, number of games matter."
 		if(this.state.loading) {
@@ -163,6 +168,12 @@ class Players extends Component {
 									date={'May 2018 00:00:00'}
 									renderer={this.renderer}
 								/>
+							</div>
+							<div className="input-group mb-3">
+								<div className="input-group-prepend">
+									<span className="input-group-text" id="basic-addon1">@</span>
+								</div>
+								<input onChange={this.handleAdminChange} type="text" className="form-control" placeholder="Username" value={this.props.admin} aria-label="Username" aria-describedby="basic-addon1"/>
 							</div>
 							<button data-tip={defaultMethod} onClick={() => {this.sortMethod(this.defaultSort)}}>Default Method</button>
 							<button data-tip={aaronMethod} onClick={() => {this.sortMethod(this.aaronSort)}}>Aaron's method</button>
@@ -210,4 +221,10 @@ class Players extends Component {
 	}
 }
 
-export default Players
+const mapStateToProps = state => {
+	return {
+		admin : state.player.admin
+	}
+}
+
+export default connect(mapStateToProps, {handleAdminChange})(Players)
