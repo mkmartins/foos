@@ -8,7 +8,7 @@ import youStink from '../you-stink.png'
 import mostLosses from '../most-losses.png'
 import jerky from '../jerky.png'
 import { connect } from 'react-redux'
-import '../App.css';
+import '../App.css'
 
 class Player extends Component {
 	constructor(props) {
@@ -67,6 +67,7 @@ class Player extends Component {
 
 	render() {
 		return(
+			<div className={(this.state.player.name === "Nick" ? " winner" : "")}>
 			<div className="container">
 				<div className="row">
 					<div className="col-12 col-sm-6">
@@ -128,6 +129,7 @@ class Player extends Component {
 						}
 					</div>
 				</div>
+			</div>
 			</div>
 		)
 	}
